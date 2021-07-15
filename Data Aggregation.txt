@@ -1,0 +1,33 @@
+df = pd.DataFrame({'key1' : ['a', 'a', 'b', 'b', 'a'],'key2' : ['one', 'two', 'one', 'two', 'one'],'data1' : np.random.randn(5),'data2' : np.random.randn(5)})
+states = np.array(['Ohio', 'California', 'California', 'Ohio', 'Ohio'])
+years = np.array([2005, 2005, 2006, 2005, 2006])
+
+o/p
+---
+
+        data1     data2   key1     key2
+0 	-0.204708 1.393406 a        one
+1 	0.478943 0.092908  a        two
+2 	-0.519439 0.281746 b        one
+3 	-0.555730 0.769023 b        two
+4 	1.965781 1.246435  a        one
+
+operations
+----------
+grouped = df['data1'].groupby(df['key1']).mean() --> 
+x = df['data1'].groupby(df['key1'],df['key2]).mean()
+x.unstack()
+lock = df['data1'].groupby(df[states, years]).mean()
+df.groupby(['key1', 'key2']).mean()
+df.groupby(['key1', 'key2']).size()
+
+Iterating over Groups
+---------------------
+for name, group in df.groupby('key1'): --> First a will be printed and then b
+	print(name)
+	print(group)
+
+pieces = dict(list(df.groupby('key1'))) --> will call first a elements then b as a dict(list)
+
+Selecting a Column or Subset of Column
+--------------------------------------

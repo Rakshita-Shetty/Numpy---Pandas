@@ -1,0 +1,78 @@
+data = pd.Series(np.random.randn(9),index=[['a', 'a', 'a', 'b', 'b', 'c', 'c', 'd', 'd'], [1, 2, 3, 1, 3, 1, 2, 2, 3]])
+data['b':'c'] 
+data.loc[['b', 'd']]
+data.loc[:,2] --> displays all the rows having 2 
+data.unstack()
+
+o/p
+---
+	1	         2	            3
+a	-2.242685	1.150036	0.991946
+b	0.953324	NaN	       -2.021255
+c	-0.334077	0.002118	NaN
+d	NaN	        0.405453	0.289092
+
+data.unstack().stack() --> will give the same result as of data
+
+data.index.names = ['key1', key2']
+data.columns.names = ['state', color']
+
+Reordering and Sorting Levels
+-----------------------------
+
+data.swaplevel('key1', 'key2') --> It swaps the key1 and key2 col
+data.sort_index(level=1) --> would swap arrangements of both columns
+data.swaplevel(0,1).sort_index(level = 0) -> would sort for key2 array
+
+frame.sum(level='key2') --> will see the key2 and then add it
+
+o/p
+---
+
+state    Ohio        Colorado
+color    Green  Red    Green
+key2                    
+1         6      8       10
+2        12     14       16
+
+Indexing with a DataFrame’s columns
+----------------------------------
+frame = pd.DataFrame({'a': range(7), 'b': range(7, 0, -1),'c': ['one', 'one', 'one', 'two', 'two','two', 'two'],'d': [0, 1, 2, 0, 1, 2, 3]})
+frame.set_index(['c']) --> will create as above and wont add c column
+frame.set_index(['c'], drop=false) --> will create as above and add c column
+frame.reset_index() --> back to original
+
+Combining and Merging Datasets
+------------------------------
+df1 = pd.DataFrame({'key': ['b', 'b', 'a', 'c', 'a', 'a', 'b'],'data1': range(7)})
+df2 = pd.DataFrame({'key': ['a', 'b', 'd'],'data2': range(3)})
+pd.merge(df1,df2, on = 'key') --> will merge only common key elements starting from df1
+pd.merge(df3, df4, left_on='lkey', right_on='rkey') --> use left_on or right_on when there is no same key col in both
+pd.merge(df1, df2, how='outer') or (how = 'inner', how = 'left', how = 'right')--> will make union of df1 and df2
+
+====================================
+pd.merge(df1,df2) and pd.merge(df1,df2, on = 'key') and pd.merge(df1,df2, how='inner') are all same
+=====================================
+
+Merging Index
+-------------
+pd.merge(left1, right1, left_on='key', right_index=True) --> same as above but when no right index defined call right_index=True
+pd.merge(left2, right2, how='outer', left_index=True, right_index=True) is same as left2.join(right2, how='outer')
+
+OR
+--
+
+left1.join(left2, on = 'key')
+left2.join(left2, how = 'outer')
+
+Concatenating Along an Axis
+---------------------------
+arr = np.arange(12).reshape((3, 4))
+np.concatenate([arr, arr], axis=1)
+pd.concat([s1, s2, s3], axis=1)
+
+Combining Data with Overlap
+---------------------------
+np.where(pd.isnull(a),b,a) --> all NULL in a is replaced by b value compared
+b[:-2].combine_first(a[2:]) --> will replace value of a in b after -2 index
+df1.combine_first(df2) --> display df1 and replace nan values in df1 with df2

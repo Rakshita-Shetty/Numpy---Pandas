@@ -1,0 +1,106 @@
+x = pd.Series(['a',1, np.nan, 'b'])
+x.isnull()
+x[0] = None
+
+Filling out missing data
+------------------------
+
+from numpy import nan as NA
+x = pd.Series([1, NA, NA, 3.5])
+x.dropna()
+
+x = pd.DataFrame([[1,2,3],[NA,NA,NA],[NA,6,7]])
+x.dropna() --> will drop all rows containing NA
+x.dropna(how = 'all') --> will drop only row containing all NA
+x[4] = NA --> will create new col with all NA's
+x.dropna(axis = 1, how = 'all') --> will delete col with all NA
+
+
+x = pd.DataFrame(np.random.randn(7,3))
+x.iloc[:4,1] = NA
+x.dropna(thresh=2) --> drop first 2rows's with NA's
+
+Filling Missing Data
+--------------------
+x.fillna(0)
+x.fillna({1:0.5, 2:0})
+x.fillna(method='ffill') --> will add same values from previous record
+x.fillna(method='ffill', limit =2)
+x.fillna(data.mean())
+
+Data Transformation
+-------------------
+x = pd.DataFrame({'a':['one','two'] * 2 + ['two'], 'b':[1,2,3,5,5]})
+x.drop_duplicates()
+
+Mapping
+-------
+x = pd.Dataframe({'food':['bacon','pulled pork', 'Pastrami'], 'ounces':[1,2,3]})
+y = {'bacon':'pig', 'pulled pork': 'handi', 'pastrami': 'suvar'}
+lower = x['food'].str.lower()
+x['animal'] = lower.map(y)
+
+Replacing Values
+----------------
+x = pd.Series([1,2,3])
+x.replace(2,np.nan)
+x.replace([2,3],[np.nan, 0])
+
+Renaming Index
+--------------
+x = pd.DataFrame(np.arange(12).reshape((3,4)), index = ['a','b','c'], columns=['one','two','three','four'])
+x.rename(index=['OHIO','INDIANA'], columns=['three','four'])
+
+Discretization and Binning
+--------------------------
+ages = [20, 22, 25, 27, 21, 23, 37, 31, 61, 45, 41, 32]
+bins = [18,25,35,60,100]
+x = pd.cut(ages,bins) 
+x = pd.cut(ages,bins, labels = ['a','b']
+x = pd.qcut() --> will distribute equally
+x.codes --> will display the index position
+x.categories
+pd.value_counts(x)
+
+x = np.random.rand(20)
+pd.cut(x,4) --> will divide into 4 categories
+pd.qcut(x,4)
+
+Detecting and Filtering
+-----------------------
+x = pd.DataFrame(np.random.randn(1000,4))
+col = x[2]
+col[np.abs(col) > 3]
+col[(np.abs(col) > 3).any(1)]
+
+Permutation and Random Sampling
+-------------------------------
+x = pd.DataFrame(np.arange(5 *4).reshape((5,4)))
+y = np.random.permutation(5)
+x.take(y) --> will display according to array displayed in y
+x.sample(3) --> will randomly select 3 rows
+
+Dummy Variables
+---------------
+x = df.DataFrame({'key':['b','b','a','c','c', 'a'], 'data1': range(6)})
+pd.get_dummies(df['key']) --> will have a,b,c col with values 0 and 1
+
+String Object Method
+--------------------
+val = 'a,b, guido'
+val.split(',') --> ['a', 'b', 'guido']
+x = [a.strip() for a in val.split(',')
+'::'.join(x) --> a::b::guido
+
+Regular Expression
+------------------
+text = "foo bar\t bar \tquz"
+re.split('\s+', text) --> ['foo', 'bar', 'bar', 'quz']
+or
+regex = re.compile('\s+')
+regex.split(test) --> ['foo', 'bar', 'bar', 'quz']
+
+for email id -->
+pattern = r'[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}'
+regex = re.compile(pattern, flags=re.IGNORECASE)
+regex.findall(text) --> email id's

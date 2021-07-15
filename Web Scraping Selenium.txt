@@ -1,0 +1,53 @@
+Libraries to be Installed
+-------------------------
+!pip install kora -q
+from kora.selenium import wd
+wd.get('url')
+wd.page_source --> will display the html elements
+
+or
+--
+
+!apt install chromium-chromedriver
+!cp /usr/lib/chromium-browser/chromedriver /usr/bin
+!pip install selenium
+
+from selenium import webdriver
+options = webdriver.ChromeOptions()
+options.add_argument('--headless')
+options.add_argument('--no-sandbox')
+options.add_argument('--disable-dev-shm-usage')
+# open it, go to a website, and get results
+wd = webdriver.Chrome(options=options)
+wd.get("https://www.scrapingbee.com/blog/selenium-python/")
+print(wd.title)
+print(wd.current_url)
+
+Operations
+----------
+
+a = wd.get_element_by_xpath('path name')
+a.text --> will print text inside the tag mentioned
+a.click() --> will open the page
+
+p1 = wd.find_elements_by_class_name('thumbnail')
+pp = p1[0] --> will display the first element of that class
+
+Next to find the link which is redirecting 
+p2 = pp.find_elements_by_tag_name('h4')[-1]
+pp2 = p2.find_element_by_tag_name('a')
+pp2.get_property('href') --> which gives the link required
+
+Next to get the links of all in single page
+
+listoflinks=[]
+for e1 in p1:
+	pp1=e1.find_elements_by_tag_name('h4')[-1]
+	pp2=pp1.find_element_by_tag_name('a')
+	listoflinks.append(pp2.get_property('href'))
+
+
+listoflinks --> will give all the links of first page
+
+
+
